@@ -25,15 +25,15 @@ total_visits = st.sidebar.number_input("Total Kunjungan", min_value=0, value=10)
 total_spent = st.sidebar.number_input("Total Pengeluaran", min_value=0.0, value=50000.0)
 satisfaction_score = st.sidebar.slider("Skor Kepuasan", 1.0, 5.0, 3.5)
 
-# 3. Definisikan susunan SEMUA KOLOM secara urut (Sesuai urutan latih model Anda)
+# 3. Definisikan susunan SEMUA KOLOM secara urut (Sudah diperbaiki ejaannya menjadi spend_per_user)
 feature_columns = [
     'customer_id', 'age', 'gender', 'country', 'city',
     'subscription_type', 'discount_used', 'total_visits', 'total_spent',
     'payment_method', 'avg_session_time', 'pages_per_session',
     'last_3_month_purchase_freq', 'avg_order_value', 'is_premium_user',
-    'marketing_spent_per_user', 'satisfaction_score', 'nps_score',
+    'marketing_spend_per_user', 'satisfaction_score', 'nps_score',
     'email_open_rate', 'email_click_rate', 'support_tickets',
-    'delivery_delay_days', 'refund_requested', 'acquisition_channel', 'lifetime_value'
+    'delivery_delay_days', 'refund_requested', 'acquisition_channel', 'lifetime_value', 'device_type'
 ]
 
 # 4. Buat dictionary kosong, lalu isi berdasarkan input user atau nilai default
@@ -50,7 +50,7 @@ for col in feature_columns:
     elif col == 'satisfaction_score': user_input[col] = satisfaction_score
     # Isi dengan nilai default yang aman jika tidak ada di form input
     else:
-        if 'score' in col or 'rate' in col or 'time' in col or 'value' in col or 'spent' in col or 'freq' in col or 'order' in col:
+        if 'score' in col or 'rate' in col or 'time' in col or 'value' in col or 'spend' in col or 'freq' in col or 'order' in col or 'spent' in col:
             user_input[col] = 0.0
         elif 'tickets' in col or 'days' in col or 'used' in col:
             user_input[col] = 0
@@ -61,7 +61,7 @@ for col in feature_columns:
 input_df = pd.DataFrame([user_input])
 input_df = input_df[feature_columns]
 
-# Duplikasi kolom jika model Anda menggunakan spasi (untuk berjaga-jaga)
+# Duplikasi kolom jika model Anda menggunakan nama dengan spasi (untuk berjaga-jaga)
 input_df['total visits'] = input_df['total_visits']
 input_df['satisfaction score'] = input_df['satisfaction_score']
 
